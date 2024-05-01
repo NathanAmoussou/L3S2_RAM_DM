@@ -1,0 +1,6 @@
+# Mot d'entrée
+ADD(0,0,r2)
+ADD(r2,1,r2)
+ADD(r1,2,r1)
+JE(r1,0,2)
+JUMP(-3)
