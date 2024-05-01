@@ -5,7 +5,7 @@ Instructions RAM :
 Instructions arithmétiques (les deux opérandes sont dans r1, r2 et le résultat dans r3) :
     ADD(r1,r2,r3)
     SUB(r1,r2,r3)
-    MULT(r1,r2,r3)
+    MUL(r1,r2,r3)
     DIV(r1,r2,r3)
 Instructions de contrôle :
     JUMP(z)
