@@ -75,10 +75,10 @@ class RAM_program:
             return int(register_input)
 
     def RAM_program_execute(self, nb_of_cycles: int = 1):
-        if self.PC > len(self.RAM_instructions_list):
-            print("PC hors des limites du programme.")
-            return
         for _ in range(nb_of_cycles):
+            if self.PC >= len(self.RAM_instructions_list):
+                print("Fin du programme RAM.")
+                break
             self.supported_operations[self.RAM_instructions_list[self.PC].instruc_type](self.RAM_instructions_list[self.PC])
             self.PC += 1
             for key, value in self.working_registers.items():
@@ -98,5 +98,5 @@ class RAM_program:
 
 
 RAM_program1 = RAM_program(RAM_instructions_list)
-RAM_program1.RAM_program_execute(6)
+RAM_program1.RAM_program_execute(7)
 #RAM_program1.RAM_program_print()
