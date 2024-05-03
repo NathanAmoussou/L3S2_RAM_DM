@@ -35,7 +35,7 @@ class RAM_program:
                                      "MUL": self.MULT_instruction, 
                                      "DIV": self.DIV_instruction}
         if RAM_instructions_list_arg[0][0:3]  not in self.supported_operations.keys():
-            self.RAM_input_list = [RAM_instructions_list_arg[0]]
+            self.RAM_input_list = RAM_instructions_list_arg[0].split(" ")
             self.RAM_instructions_list = [RAM_instruction(RAM_instruction_arg) for RAM_instruction_arg in RAM_instructions_list_arg[1:]]
         else:
             self.RAM_input_list = list()
@@ -44,11 +44,14 @@ class RAM_program:
         self.in_registers = list() # Registres d'entrée.
         self.out_registers = list() # Registres de sortie.
         self.working_registers = dict() # Registres de travail.
+        if len(self.RAM_input_list) > 0:
+            self.in_registers = self.RAM_input_list
+            self.in_registers.insert(0, len(self.RAM_input_list))
 
     def RAM_program_print(self):
         print("Flow d'instructions RAM :")
         if len(self.RAM_input_list) > 0:
-            print(f"Entrées : {self.RAM_input_list}")
+            print(f"Entrées : {self.in_registers}")
         else:
             print("Pas d'entrées.")
         for i in range(len(self.RAM_instructions_list)):
@@ -58,6 +61,18 @@ class RAM_program:
             print(f"Instruction : {instruc.str_instruc}")
             print(f"Type : {instruc.instruc_type}")
             print(f"Arguments : {instruc.instruc_args}")
+
+    def acces_register(self, register_input):
+        if register_input[0] == "r":
+            return int(self.working_registers[register_input])
+        elif register_input[0] == "i":
+            return int(self.in_registers[int(register_input[1:])])
+        elif register_input[0:2] == "@r":
+            return int(self.working_registers[register_input[1:]])
+        elif register_input[0:2] == "@i":
+            return int(self.in_registers[int(register_input[2:])])
+        else:
+            return int(register_input)
 
     def RAM_program_execute(self, nb_of_cycles: int = 1):
         if self.PC > len(self.RAM_instructions_list):
@@ -70,51 +85,18 @@ class RAM_program:
                 print(f"Registre {key} : {value}")
 
     def ADD_instruction(self, RAM_instruction_arg: RAM_instruction):
-        buff = 0
-        for arg in RAM_instruction_arg.instruc_args[0:2]:
-            if arg[0] == "r":
-                buff += self.working_registers[arg]
-            else:
-                buff += int(arg)
-        self.working_registers[RAM_instruction_arg.instruc_args[2]] = buff
+        self.working_registers[RAM_instruction_arg.instruc_args[2]] = self.acces_register(RAM_instruction_arg.instruc_args[0]) + self.acces_register(RAM_instruction_arg.instruc_args[1])
 
     def SUB_instruction(self, RAM_instruction_arg: RAM_instruction):
-        buff = 0
-        for arg in RAM_instruction_arg.instruc_args[0:2]:
-            if arg[0] == "r":
-                buff += self.working_registers[arg]
-            else:
-                buff -= int(arg)
-        self.working_registers[RAM_instruction_arg.instruc_args[2]] = buff
+        self.working_registers[RAM_instruction_arg.instruc_args[2]] = self.acces_register(RAM_instruction_arg.instruc_args[0]) - self.acces_register(RAM_instruction_arg.instruc_args[1])
 
     def MULT_instruction(self, RAM_instruction_arg: RAM_instruction):
-        buff = 1
-        for arg in RAM_instruction_arg.instruc_args[0:2]:
-            if arg[0] == "r":
-                buff *= self.working_registers[arg]
-            else:
-                buff *= int(arg)
-        self.working_registers[RAM_instruction_arg.instruc_args[2]] = buff
+        self.working_registers[RAM_instruction_arg.instruc_args[2]] = self.acces_register(RAM_instruction_arg.instruc_args[0]) * self.acces_register(RAM_instruction_arg.instruc_args[1])
 
     def DIV_instruction(self, RAM_instruction_arg: RAM_instruction):
-        # Récupère la première valeur (dividende)
-        if RAM_instruction_arg.instruc_args[0][0] == 'r':
-            dividend = self.working_registers[RAM_instruction_arg.instruc_args[0]]
-        else:
-            dividend = int(RAM_instruction_arg.instruc_args[0])
-
-        # Récupère la deuxième valeur (diviseur)
-        if RAM_instruction_arg.instruc_args[1][0] == 'r':
-            divisor = self.working_registers[RAM_instruction_arg.instruc_args[1]]
-        else:
-            divisor = int(RAM_instruction_arg.instruc_args[1])
-
-        # Effectue la division et stocke le résultat dans le registre de destination
-        if divisor != 0:  # Assurez-vous que le diviseur n'est pas zéro pour éviter une division par zéro
-            self.working_registers[RAM_instruction_arg.instruc_args[2]] = dividend / divisor
-        else:
-            print("Erreur de division par zéro")
+        self.working_registers[RAM_instruction_arg.instruc_args[2]] = self.acces_register(RAM_instruction_arg.instruc_args[0]) / self.acces_register(RAM_instruction_arg.instruc_args[1])
 
 
 RAM_program1 = RAM_program(RAM_instructions_list)
-RAM_program1.RAM_program_execute(4)
+RAM_program1.RAM_program_execute(6)
+#RAM_program1.RAM_program_print()

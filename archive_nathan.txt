@@ -16,3 +16,23 @@ def RAM_instructions_list_print(RAM_instructions_list_arg = RAM_instructions_lis
         print(f"Arguments : {instruc.instruc_args}")
 
 RAM_instructions_list_print()
+
+03/05/2024 - 20:06
+
+"""# Récupère la première valeur (dividende)
+        if RAM_instruction_arg.instruc_args[0][0] == 'r':
+            dividend = self.working_registers[RAM_instruction_arg.instruc_args[0]]
+        else:
+            dividend = int(RAM_instruction_arg.instruc_args[0])
+
+        # Récupère la deuxième valeur (diviseur)
+        if RAM_instruction_arg.instruc_args[1][0] == 'r':
+            divisor = self.working_registers[RAM_instruction_arg.instruc_args[1]]
+        else:
+            divisor = int(RAM_instruction_arg.instruc_args[1])
+
+        # Effectue la division et stocke le résultat dans le registre de destination
+        if divisor != 0:  # Assurez-vous que le diviseur n'est pas zéro pour éviter une division par zéro
+            self.working_registers[RAM_instruction_arg.instruc_args[2]] = dividend / divisor
+        else:
+            print("Erreur de division par zéro")"""
