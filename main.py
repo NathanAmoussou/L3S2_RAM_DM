@@ -44,7 +44,7 @@ class RAM_program:
         self.in_registers = list() # Registres d'entrée.
         self.out_registers = list() # Registres de sortie.
         self.working_registers = dict() # Registres de travail.
-    
+
     def RAM_program_print(self):
         print("Flow d'instructions RAM :")
         if len(self.RAM_input_list) > 0:
@@ -68,7 +68,7 @@ class RAM_program:
             self.PC += 1
             for key, value in self.working_registers.items():
                 print(f"Registre {key} : {value}")
-    
+
     def ADD_instruction(self, RAM_instruction_arg: RAM_instruction):
         buff = 0
         for arg in RAM_instruction_arg.instruc_args[0:2]:
@@ -77,7 +77,7 @@ class RAM_program:
             else:
                 buff += int(arg)
         self.working_registers[RAM_instruction_arg.instruc_args[2]] = buff
-    
+
     def SUB_instruction(self, RAM_instruction_arg: RAM_instruction):
         buff = 0
         for arg in RAM_instruction_arg.instruc_args[0:2]:
@@ -117,4 +117,4 @@ class RAM_program:
 
 
 RAM_program1 = RAM_program(RAM_instructions_list)
-RAM_program1.RAM_program_execute(2)
+RAM_program1.RAM_program_execute(4)

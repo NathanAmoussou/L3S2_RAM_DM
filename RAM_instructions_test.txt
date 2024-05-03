@@ -1,2 +1,4 @@
 DIV(6,2,r1)
 DIV(r1,3,r2)
+MUL(r2,2,r3)
+ADD(r3,1,r4)
