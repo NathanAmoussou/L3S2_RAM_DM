@@ -75,14 +75,22 @@ class RAM_program:
             return int(register_input)
 
     def RAM_program_execute(self, nb_of_cycles: int = 1):
-        for _ in range(nb_of_cycles):
+        print("Instructions :")
+        for i in range(len(self.RAM_instructions_list)):
+            print(f"{i + 1} : {self.RAM_instructions_list[i].str_instruc}")
+        print()
+        for i in range(nb_of_cycles):
+            print(f"Configuration {i+1} :")
+            print(f"PC : {self.PC + 1}")
             if self.PC >= len(self.RAM_instructions_list):
                 print("Fin du programme RAM.")
                 break
+            print(f"Instruction : {self.RAM_instructions_list[self.PC].str_instruc}")
             self.supported_operations[self.RAM_instructions_list[self.PC].instruc_type](self.RAM_instructions_list[self.PC])
             self.PC += 1
             for key, value in self.working_registers.items():
                 print(f"Registre {key} : {value}")
+            print()
 
     def ADD_instruction(self, RAM_instruction_arg: RAM_instruction):
         self.working_registers[RAM_instruction_arg.instruc_args[2]] = self.acces_register(RAM_instruction_arg.instruc_args[0]) + self.acces_register(RAM_instruction_arg.instruc_args[1])
