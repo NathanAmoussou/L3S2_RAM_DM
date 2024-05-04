@@ -1,7 +1,0 @@
-2 4
-ADD(i1,i2,r1)
-SUB(5,r1,r2)
-MUL(r2,2,r3)
-ADD(r3,3,r4)
-ADD(r4,1,r5)
-ADD(@r1,@i1,r6)

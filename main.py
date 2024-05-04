@@ -10,7 +10,8 @@ args = parser.parse_args()
 filepath = args.filepath
 print(f"Traitement du fichier : {filepath}")
 for line in open(filepath, 'r'):
-    RAM_instructions_list.append(line.strip())
+    if line[0] != "#":
+        RAM_instructions_list.append(line.strip())
 
 # Création de la classe pour les instructions RAM.
 class RAM_instruction:
@@ -34,9 +35,11 @@ class RAM_program:
                                      "SUB": self.SUB_instruction, 
                                      "MUL": self.MULT_instruction, 
                                      "DIV": self.DIV_instruction,
-                                     "JUMP": self.JUMP_instruction,
+                                     "JMP": self.JUMP_instruction,
                                      "JE": self.JE_instruction,
-                                     "JL": self.JL_instruction}
+                                     "JL": self.JL_instruction,
+                                     "JLE": self.JLE_instruction,
+                                     "SWA": self.SWA_instruction}
         if RAM_instructions_list_arg[0][0:3]  not in self.supported_operations.keys():
             self.RAM_input_list = RAM_instructions_list_arg[0].split(" ")
             self.RAM_instructions_list = [RAM_instruction(RAM_instruction_arg) for RAM_instruction_arg in RAM_instructions_list_arg[1:]]
@@ -73,7 +76,9 @@ class RAM_program:
         elif register_input[0:2] == "@r":
             return int(self.working_registers[register_input[1:]])
         elif register_input[0:2] == "@i":
-            return int(self.in_registers[int(register_input[2:])])
+            return int(self.working_registers[f'r{self.in_registers[int(register_input[2:])]}'])
+        elif register_input[0:2] == "I@":
+            return int(self.in_registers[self.working_registers[f'r{int(register_input[3:])}']])
         else:
             return int(register_input)
 
@@ -118,7 +123,17 @@ class RAM_program:
         if self.acces_register(RAM_instruction_arg.instruc_args[0]) > self.acces_register(RAM_instruction_arg.instruc_args[1]):
             self.PC += self.acces_register(RAM_instruction_arg.instruc_args[2]) - 1
 
+    def JLE_instruction(self, RAM_instruction_arg: RAM_instruction):
+        if self.acces_register(RAM_instruction_arg.instruc_args[0]) >= self.acces_register(RAM_instruction_arg.instruc_args[1]):
+            self.PC += self.acces_register(RAM_instruction_arg.instruc_args[2]) - 1
+    
+    def SWA_instruction(self, RAM_instruction_arg: RAM_instruction):
+        buff_1 = self.acces_register(RAM_instruction_arg.instruc_args[0])
+        buff_2 = self.acces_register(RAM_instruction_arg.instruc_args[1])
+        self.working_registers[RAM_instruction_arg.instruc_args[0]] = buff_2
+        self.working_registers[RAM_instruction_arg.instruc_args[1]] = buff_1
+
 
 RAM_program1 = RAM_program(RAM_instructions_list)
-RAM_program1.RAM_program_execute(100)
-#RAM_program1.RAM_program_print()
+#RAM_program1.RAM_program_execute(100)
+RAM_program1.RAM_program_print()
