@@ -33,7 +33,10 @@ class RAM_program:
         self.supported_operations = {"ADD": self.ADD_instruction, 
                                      "SUB": self.SUB_instruction, 
                                      "MUL": self.MULT_instruction, 
-                                     "DIV": self.DIV_instruction}
+                                     "DIV": self.DIV_instruction,
+                                     "JUMP": self.JUMP_instruction,
+                                     "JE": self.JE_instruction,
+                                     "JL": self.JL_instruction}
         if RAM_instructions_list_arg[0][0:3]  not in self.supported_operations.keys():
             self.RAM_input_list = RAM_instructions_list_arg[0].split(" ")
             self.RAM_instructions_list = [RAM_instruction(RAM_instruction_arg) for RAM_instruction_arg in RAM_instructions_list_arg[1:]]
@@ -103,8 +106,19 @@ class RAM_program:
 
     def DIV_instruction(self, RAM_instruction_arg: RAM_instruction):
         self.working_registers[RAM_instruction_arg.instruc_args[2]] = self.acces_register(RAM_instruction_arg.instruc_args[0]) / self.acces_register(RAM_instruction_arg.instruc_args[1])
+    
+    def JUMP_instruction(self, RAM_instruction_arg: RAM_instruction):
+        self.PC += self.acces_register(RAM_instruction_arg.instruc_args[0]) - 1
+
+    def JE_instruction(self, RAM_instruction_arg: RAM_instruction):
+        if self.acces_register(RAM_instruction_arg.instruc_args[0]) == self.acces_register(RAM_instruction_arg.instruc_args[1]):
+            self.PC += self.acces_register(RAM_instruction_arg.instruc_args[2]) - 1
+    
+    def JL_instruction(self, RAM_instruction_arg: RAM_instruction):
+        if self.acces_register(RAM_instruction_arg.instruc_args[0]) > self.acces_register(RAM_instruction_arg.instruc_args[1]):
+            self.PC += self.acces_register(RAM_instruction_arg.instruc_args[2]) - 1
 
 
 RAM_program1 = RAM_program(RAM_instructions_list)
-RAM_program1.RAM_program_execute(7)
+RAM_program1.RAM_program_execute(100)
 #RAM_program1.RAM_program_print()
