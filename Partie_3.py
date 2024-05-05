@@ -1,4 +1,4 @@
-
+import partie_1
 #Question 8
 
 def create_graph(self):
@@ -124,3 +124,39 @@ def optimize_program(self):
 
     self.remove_unreachable_code()
     self.combine_instructions()
+
+
+import tkinter as tk
+
+def draw_graph(graph, canvas):
+    position = {}
+    step_x = 400 // (len(graph) + 1)
+    current_x = step_x
+    current_y = 200  # Centre vertical du canvas
+
+    # Dessiner les nœuds
+    for node in graph:
+        position[node] = (current_x, current_y)
+        canvas.create_oval(current_x - 20, current_y - 20, current_x + 20, current_y + 20, fill='skyblue')
+        canvas.create_text(current_x, current_y, text=str(node))
+        current_x += step_x  # Déplacement horizontal
+
+    # Dessiner les arêtes
+    for node in graph:
+        for dest in graph[node]:
+            start_x, start_y = position[node]
+            end_x, end_y = position[dest]
+            canvas.create_line(start_x, start_y, end_x, end_y, arrow=tk.LAST)
+def setup_and_run():
+    root = tk.Tk()
+    root.title("Visualisation du Graphe de la RAM")
+    canvas = tk.Canvas(root, height=400, width=400, bg='white')
+    canvas.pack()
+
+    # Utiliser une instance et une méthode pour créer le graphe (supposant que RAM_program1 est déjà définie)
+    graph = RAM_program1.create_graph()
+    draw_graph(graph, canvas)
+
+    root.mainloop()
+
+setup_and_run()
