@@ -48,9 +48,7 @@ def remove_unreachable_code(self):
 
 
 
-# Question 10 : (Bonus) Proposer une methode pour combiner plusieurs instructions en une seule. Par
-# exemple, les deux instructions consecutives ADD(4,0,r1), ADD(r1,9,r1) peuvent ˆetre remplacees par
-# ADD(13,0,r1), si dans le graphe le sommet ADD(r1,9,r1) n’a comme predecesseur que ADD(4,0,r1).
+# Question 10 
 
 def combine_instructions(self):
     """Combine les instructions consécutives du même type."""
