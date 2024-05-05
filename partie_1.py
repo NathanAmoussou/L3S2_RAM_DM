@@ -139,6 +139,6 @@ class RAM_program:
         self.working_registers[RAM_instruction_arg.instruc_args[1]] = buff_1
 
 RAM_program1 = RAM_program(RAM_instructions_list)
-RAM_program1.RAM_program_execute(10)
+RAM_program1.RAM_program_execute(1000)
 #RAM_program1.RAM_program_print()
 
