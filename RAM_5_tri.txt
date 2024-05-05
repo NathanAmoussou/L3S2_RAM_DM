@@ -1,0 +1,52 @@
+14 2 94 3 103 4 583 3
+# Initialisation
+ADD(1,0,r0)
+ADD(i0,0,r1)
+ADD(0,0,r2)
+ADD(1,0,r3)
+ADD(0,0,r4)
+ADD(0,0,r5)
+ADD(0,0,r6)
+# Programme
+SUB(r0,r1,r4)
+JL(r4,0,alle a 17)
+ADD(r1,0,r2)
+SUB(r2,r0,r4)
+JE(r4,0,alle a 15)
+# À finir
+
+# Assumons que le nombre d'éléments dans le tableau est en i0
+# et que les éléments du tableau sont en i1, i2, ..., i(n-1)
+# Utilisons r0, r1, et r2 pour les registres de travail
+
+# Initialisation
+ADD(i0,0,r0)        # r0 = taille du tableau (n)
+ADD(0,0,r1)         # r1 = index (i)
+ADD(0,0,r2)         # r2 = swap_flag
+
+# Boucle pour le tri
+# Début de la boucle extérieure
+OUTER_LOOP:
+SUB(r0,1,r0)        # r0 = n - 1
+
+# Boucle intérieure
+INNER_LOOP:
+SUB(r0,1,r1)        # r1 = j = n - 2
+
+# Comparaison et échange
+JE(r1,-1,8)         # Si j < 0, fin de la boucle intérieure
+JL(i@r1,i@(r1+1),3) # Si A[j] <= A[j+1], passer à l'instruction suivante
+SWAP(i@r1,i@(r1+1)) # Sinon, échanger A[j] et A[j+1]
+ADD(1,0,r2)         # swap_flag = 1
+
+# Retourner pour le prochain élément
+SUB(r1,1,r1)        # j = j - 1
+JMP(-6)
+
+# Vérifier si une permutation a été effectuée
+JE(r2,0,3)          # Si swap_flag == 0, fin du tri
+ADD(0,0,r2)         # Réinitialiser le swap_flag
+JMP(-9)
+
+# Fin du tri
+ADD(0,0,o0)         # Sortie (peut être modifiée selon vos besoins)
