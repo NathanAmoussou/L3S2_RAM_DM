@@ -1,3 +1,4 @@
+import partie_1
 
 ### Question 6
 

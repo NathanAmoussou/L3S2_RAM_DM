@@ -37,6 +37,7 @@ class RAM_program:
                                      "DIV": self.DIV_instruction,
                                      "JMP": self.JUMP_instruction,
                                      "JE": self.JE_instruction,
+                                     "JN": self.JN_instruction,
                                      "JL": self.JL_instruction,
                                      "JLE": self.JLE_instruction,
                                      "SWA": self.SWA_instruction}
@@ -118,6 +119,10 @@ class RAM_program:
     def JE_instruction(self, RAM_instruction_arg: RAM_instruction):
         if self.acces_register(RAM_instruction_arg.instruc_args[0]) == self.acces_register(RAM_instruction_arg.instruc_args[1]):
             self.PC += self.acces_register(RAM_instruction_arg.instruc_args[2]) - 1
+
+    def JN_instruction(self, RAM_instruction_arg: RAM_instruction):
+        if self.acces_register(RAM_instruction_arg.instruc_args[0]) != self.acces_register(RAM_instruction_arg.instruc_args[1]):
+            self.PC += self.acces_register(RAM_instruction_arg.instruc_args[2]) - 1
     
     def JL_instruction(self, RAM_instruction_arg: RAM_instruction):
         if self.acces_register(RAM_instruction_arg.instruc_args[0]) > self.acces_register(RAM_instruction_arg.instruc_args[1]):
@@ -135,5 +140,5 @@ class RAM_program:
 
 
 RAM_program1 = RAM_program(RAM_instructions_list)
-#RAM_program1.RAM_program_execute(100)
-RAM_program1.RAM_program_print()
+RAM_program1.RAM_program_execute(10)
+#RAM_program1.RAM_program_print()
