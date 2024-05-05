@@ -1,53 +1,53 @@
-5 0 0 0 2 1 0 0 0 1 0 2 1 1 0 0 1 1 1 2 1 1 1 1 1 2 1 1 0 2 1 0 2 4 0 0 1 1 1
+5 0 0 0 2 1 0 0 0 1 0 2 1 1 0 0 1 1 1 2 1 1 1 1 1 2 1 1 0 2 1 0 2 5 0 0 0 1 1
 # Initialisation
-ADD(i1,0,r1) // Nombre de transition
-ADD(0,0,r7) // État courant de l'automate (on commence par l'état initial)
-ADD(0,0,r8) // État courant de la pile (on commence par ∂)
+ADD(i1,0,r1) // r1 prend le nombre de transition
+ADD(0,0,r7) // r7 prend l'état courant
+ADD(0,0,r8) // r8 prend l'état de pile courant
 # Ici faudra la logique pour trouver le caractère courant
-ADD(i35,0,r9) // Symbole à lire (ici a = 0)
-ADD(0,0,r4) // Compteur de transition lue
-ADD(1,0,r3) // Pointeur de transition sur i1
-ADD(1,0,r10) // Feu initialisé à vert
-ADD(5,0,r2) // Compteur de taille de transition (par défaut 5)
-ADD(0,0,r14) // Taille de la pile
+ADD(i35,0,r9) 
+ADD(0,0,r4)
+ADD(2,0,r3)
+ADD(1,0,r10)
+ADD(5,0,r2)
+ADD(0,0,r14)
 # Tant que le compteur de transition parcouru r4 < r1
-JE(I@r3,r7,2) // Si état d'automate pointé = état d'automate courant, sauter le feu rouge
-ADD(0,0,r10) // Feu rouge
-ADD(r3,1,r3) // Incrémenter le pointeur de transition
-ADD(r2,-1,r2) // Décrémenter le compteur de taille de transition
-JE(I@r3,r8,2) // Si état de pile pointé = état de pile courant, sauter le feu rouge
-ADD(0,0,r10) // Feu rouge
-ADD(r3,1,r3) // Incrémenter le pointeur de transition
-ADD(r2,-1,r2) // Décrémenter le compteur de taille de transition
-JE(I@r3,r9,2) // Si symbole pointé = symbole courant, sauter le feu rouge
-ADD(0,0,r10) // Feu rouge
-ADD(r3,1,r3) // Incrémenter le pointeur de transition
-ADD(r2,-1,r2) // Décrémenter le compteur de taille de transition
-ADD(r2,I@r3,r2) // Ajout de la taille du mot w
-ADD(r2,-1,r2) // Ajout de la taille du mot w (I@r3 - 1)
-ADD(r3,1,r3) // Incrémenter le pointeur de transition
-ADD(r2,-1,r2) // Décrémenter le compteur de taille de transition
+JE(I@r3,r7,2)
+ADD(0,0,r10)
+ADD(r3,1,r3)
+ADD(r2,-1,r2)
+JE(I@r3,r8,2)
+ADD(0,0,r10)
+ADD(r3,1,r3)
+ADD(r2,-1,r2)
+JE(I@r3,r9,2)
+ADD(0,0,r10)
+ADD(r3,1,r3)
+ADD(r2,-1,r2)
+ADD(r2,I@r3,r2)
+ADD(r2,-1,r2)
+ADD(r3,1,r3)
+ADD(r2,-1,r2)
 # Tant que r2 > 0
-JE(r10,0,5) // Si feu rouge, sauter les updates
-JN(I@r3,1,2) // Si pointeur pointe ≠ 1, on met pas +1 dans la pile
-ADD(r14,1,r14) // Incrémenter la taille de la pile
-JN(I@r3,2,2) // Si pointeur pointe ≠ 1, on met pas -1 dans la pile
-ADD(r14,-1,r14) // Décrémenter la taille de la pile
-ADD(r3,1,r3) // Incrémenter le pointeur de transition
-ADD(r2,-1,r2) // Décrémenter le compteur de taille de transition
-JL(r2,0,-7) // Boucle tant que r2 > 0
+JE(r10,0,5)
+JN(I@r3,1,2)
+ADD(r14,1,r14)
+JN(I@r3,2,2)
+ADD(r14,-1,r14)
+ADD(r3,1,r3)
+ADD(r2,-1,r2)
+JL(r2,0,-7)
 # Fin tant que r2 > 0
-JE(r10,0,4) // Si feu rouge, sauter les updates
-ADD(r3,0,r7) // Mettre l'état courant de l'automate à l'état pointé
-ADD(r9,1,r9) // Incrémenter le pointeur de symbole à lire
-ADD(1,0,r3) // Remettre le pointeur de transition à 1
-JE(r10,1,4) // Si feu vert, sauter les updates
-ADD(r4,1,r4) // Incrémenter le compteur de transition lue
-ADD(r3,1,r3) // Incrémenter le pointeur de transition
-ADD(1,0,r10) // Remettre le feu à vert
-JL(r1,r4,-32) // Boucle tant que r4 < r1
+JE(r10,0,4)
+ADD(r3,0,r7)
+ADD(r9,1,r9)
+ADD(1,0,r3)
+JE(r10,1,4)
+ADD(r4,1,r4)
+ADD(r3,1,r3)
+ADD(1,0,r10)
+JL(r1,r4,-32)
 # Fin tant que r4 < r1
-JN(r10,0,3) // Si feu vert, on saute les updates
+JN(r10,0,3)
 ADD(0,0,o1)
 JUMP(2)
 ADD(1,0,o1)
