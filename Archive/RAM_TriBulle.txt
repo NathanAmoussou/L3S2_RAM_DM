@@ -1,0 +1,26 @@
+2 0
+ADD(i1,0,r1)
+ADD(1,0,r2)
+ADD(0,0,r3)
+# Boucle externe (i)
+JE(r2,0,18)
+# Boucle interne (j)
+ADD(0,0,r3)
+JE(r1,0,16)
+# Comparer les éléments adjacents et les échanger si nécessaire
+ADD(1,r3,@r3)
+ADD(1,@r3,r4)
+JL(r4,r1,12)
+SWA(r3,@r3)
+ADD(1,r3,r3)
+JMP(7)
+ADD(1,r2,r2)
+JMP(3)
+ADD(1,0,r1)
+ADD(0,0,r2)  # Initialiser un registre pour l'index du tableau
+JMP(31)  # Saut au début de la boucle d'écriture
+ADD(i1,@r2,o1)  # Écrire l'élément actuel du tableau trié dans la sortie
+ADD(1,r2,r2)  # Incrémenter l'index du tableau
+ADD(1,r1,r1)  # Incrémenter l'index de la sortie
+JE(r1,0,38)  # Vérifier si l'écriture est terminée (saut à la sortie de la boucle)
+JMP(31)  # Saut au début de la boucle d'écriture
